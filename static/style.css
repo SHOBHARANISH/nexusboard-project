@@ -1,0 +1,189 @@
+/* ===========================
+   🔷 Base Layout
+=========================== */
+body {
+    background-color: lightblue;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* ===========================
+   🟡 Role Buttons
+=========================== */
+
+/* PROJECT_HEAD - top left */
+.PROJECT_HEAD {
+    width: 200px;
+    height: 100px;
+    border: 10px;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transform: scale(1.05);
+    display: inline-block;
+    margin: 10px;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    background-color: gold;
+    color: black;
+}
+
+/* FRONTEND_DEV - slightly right & down */
+.FRONTEND_DEV {
+    width: 200px;
+    height: 100px;
+    border: 10px;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transform: scale(1.05);
+    display: inline-block;
+    margin: 10px;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    background-color: gold;
+    color: black;
+}
+
+/* BACKEND_DEV - more right & down */
+.BACKEND_DEV {
+    width: 200px;
+    height: 100px;
+    border: 10px;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transform: scale(1.05);
+    display: inline-block;
+    margin: 10px;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    background-color: gold;
+    color: black;
+}
+
+/* DATABASE - bottom right */
+.DATABASE {
+    width: 200px;
+    height: 100px;
+    border: 10px;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transform: scale(1.05);
+    display: inline-block;
+    margin: 10px;
+    position: absolute;
+    top: 80%;
+    left: 70%;
+    background-color: gold;
+    color: black;
+}
+
+/* Hover effect for all buttons */
+button:hover {
+    background-color: darkorange;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* ===========================
+   🔍 Search Box
+=========================== */
+.search-container {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+}
+
+#search {
+    width: 280px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 3px solid gold;
+    border-radius: 25px;
+    outline: none;
+    text-align: center;
+    background-color: #fff8dc; /* light cream for soft contrast */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+#search:focus {
+    border-color: darkorange;
+    box-shadow: 0 0 10px gold;
+}
+
+
+/* ===== Dashboard Buttons ===== */
+.button-container {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.button-container h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+/* Common button style */
+.btn {
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+
+/* Hover animation */
+.btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Colors */
+.upload {
+    background-color: #28a745; /* Green */
+}
+
+.pending {
+    background-color: #007bff; /* Blue */
+}
+
+.not-started {
+    background-color: #dc3545; /* Red */
+}
+
+/* Hover Shades */
+.upload:hover {
+    background-color: #218838;
+}
+
+.pending:hover {
+    background-color: #0069d9;
+}
+
+.not-started:hover {
+    background-color: #c82333;
+}
+
+
+/* Hide dashboard buttons on Project Head page */
+.project-head-page .button-container {
+    display: none;
+}
+

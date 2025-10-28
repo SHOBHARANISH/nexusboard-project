@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <center><h1>NOTIFICATION</h1></center>
+    <!-- Search Box -->
+<center>
+    <input type="text" id="search" placeholder="🔍 Search for a role...">
+</center>
+
+
+
+
+
+    
+
+    <center>
+        <!-- Project Head Button goes to password page -->
+        <button class="PROJECT_HEAD" onclick="window.location.href='/project_head'">
+            PROJECT_HEAD
+        </button>
+
+        <!-- Other buttons go directly to their respective pages -->
+        <button class="FRONTEND_DEV" onclick="window.location.href='/frontend'">
+            FRONTEND_DEV
+        </button>
+
+        <button class="BACKEND_DEV" onclick="window.location.href='/backend'">
+            BACKEND_DEV
+        </button>
+
+        <button class="DATABASE" onclick="window.location.href='/database'">
+            DATABASE
+        </button>
+    </center>
+
+    <script>
+    function searchTask() {
+        const filter = document.getElementById("search").value.toLowerCase();
+        document.querySelectorAll(".PROJECT_HEAD, .FRONTEND_DEV, .BACKEND_DEV, .DATABASE").forEach(btn => {
+            btn.style.display = btn.textContent.toLowerCase().includes(filter) ? "" : "none";
+        });
+    }
+    document.getElementById("search").addEventListener("input", searchTask);
+</script>
+
+
+
+
+
+
+ 
+
+</body>
+</html>

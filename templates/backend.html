@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+
+    <title>Backend Case Studies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        /* Case Cards Container */
+        .case-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px 40px 20px;
+        }
+
+        /* Individual Card Styling */
+        .case-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 320px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .case-card h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .case-card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .case-card .impact {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .employee-info, .duration-info {
+            font-size: 13px;
+            color: #222;
+            margin-top: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .backend { background-color: #FF9800; } /* Orange */
+
+        /* Buttons Container */
+        .button-container {
+            text-align: center;
+            margin: 20px 0 40px 0;
+        }
+
+        .nav-button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: #0b7dda;
+        }
+
+        /* Responsive for smaller screens */
+        @media screen and (max-width: 650px) {
+            .case-card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Backend Case Studies</h1>
+
+    <div class="case-card-container">
+
+        <!-- Backend Cards -->
+        <div class="case-card">
+            <h2>CodeBridge Systems</h2>
+            <p><strong>Problem:</strong> API response times were too slow due to poor query optimization</p>
+            <p><strong>Solution:</strong> Optimized SQL queries and implemented caching for frequent requests</p>
+            <p class="impact">Impact: Reduced API latency by 65%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Arjun Mehta (ID: EMP201)</p>
+            <p class="duration-info"><strong>Duration:</strong> 1 week</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>NextGen Technologies</h2>
+            <p><strong>Problem:</strong> Backend server crashed under high traffic</p>
+            <p><strong>Solution:</strong> Implemented load balancing and asynchronous request handling</p>
+            <p class="impact">Impact: Improved system uptime to 99.9%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Rahul Singh (ID: EMP202)</p>
+            <p class="duration-info"><strong>Duration:</strong> 2 weeks</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>DataSync Corp.</h2>
+            <p><strong>Problem:</strong> API endpoints were not secured, leading to unauthorized access</p>
+            <p><strong>Solution:</strong> Integrated JWT authentication and role-based access control</p>
+            <p class="impact">Impact: Strengthened backend security and reduced vulnerabilities</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Priya Nair (ID: EMP203)</p>
+            <p class="duration-info"><strong>Duration:</strong> 1.5 weeks</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>SoftLogic Pvt Ltd</h2>
+            <p><strong>Problem:</strong> Server load increased due to redundant API calls</p>
+            <p><strong>Solution:</strong> Introduced API rate limiting and response caching</p>
+            <p class="impact">Impact: Server load reduced by 40%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Manish Verma (ID: EMP204)</p>
+            <p class="duration-info"><strong>Duration:</strong> 1 week</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>CloudMatrix</h2>
+            <p><strong>Problem:</strong> Inconsistent data sync between services</p>
+            <p><strong>Solution:</strong> Used message queues and retry mechanisms to ensure consistency</p>
+            <p class="impact">Impact: Data consistency improved by 90%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Ananya Rao (ID: EMP205)</p>
+            <p class="duration-info"><strong>Duration:</strong> 2 weeks</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>ByteVerse Ltd.</h2>
+            <p><strong>Problem:</strong> REST API structure was not scalable for new features</p>
+            <p><strong>Solution:</strong> Migrated to modular microservices architecture</p>
+            <p class="impact">Impact: Enabled faster feature deployment and easier maintenance</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Vikram Patel (ID: EMP206)</p>
+            <p class="duration-info"><strong>Duration:</strong> 1.5 weeks</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>DataForge</h2>
+            <p><strong>Problem:</strong> Logs were not centralized, making debugging hard</p>
+            <p><strong>Solution:</strong> Implemented centralized logging using ELK stack</p>
+            <p class="impact">Impact: Debugging time reduced by 70%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Sneha Iyer (ID: EMP207)</p>
+            <p class="duration-info"><strong>Duration:</strong> 2 weeks</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+        <div class="case-card">
+            <h2>CodeSphere Technologies</h2>
+            <p><strong>Problem:</strong> Database queries were blocking async operations</p>
+            <p><strong>Solution:</strong> Switched to async ORM and used non-blocking I/O</p>
+            <p class="impact">Impact: Improved API throughput by 55%</p>
+            <p class="employee-info"><strong>Assigned to:</strong> Rajesh Kumar (ID: EMP208)</p>
+            <p class="duration-info"><strong>Duration:</strong> 1 week</p>
+            <span class="badge backend">Backend</span>
+        </div>
+
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="button-container">
+    <button class="nav-button" onclick="window.location.href='/'">Back</button>
+    <button class="nav-button">Next</button> <!-- Leave as is -->
+</div>
+
+<div class="button-container">
+    <button class="btn upload">Upload</button>
+    <button class="btn pending">Pending</button>
+    <button class="btn not-started">Not Started</button>
+</div>
+
+
+    
+</body>
+</html>
+
+        </body>
+        </html>
