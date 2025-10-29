@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <!-- Make sure this CSS file exists in static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <center><h1>NOTIFICATION</h1></center>
+
+    <center>
+        <!-- Project Head Button -->
+        <button class="PROJECT_HEAD" onclick="window.location.href='{{ url_for('project_head') }}'">
+
+            PROJECT_HEAD
+        </button>
+
+        <!-- Other buttons -->
+        <button class="FRONTEND_DEV" onclick="window.location.href='{{ url_for('frontend') }}'">
+            FRONTEND_DEV
+        </button>
+
+        <button class="BACKEND_DEV" onclick="window.location.href='{{ url_for('backend') }}'">
+            BACKEND_DEV
+        </button>
+
+        <button class="DATABASE" onclick="window.location.href='{{ url_for('database') }}'">
+            DATABASE
+        </button>
+    </center>
+
+</body>
+</html>

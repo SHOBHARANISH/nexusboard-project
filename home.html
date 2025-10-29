@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Flask App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <!-- <div class="nav-left">
+            <a href="{{ url_for('profile') }}" class="nav-link">
+                <button class="nav-btn">👤 Profile</button>
+            </a>
+        </div> -->
+        <div class="nav-center">
+            <h1 class="brand-name">NotifyNet Dashboard</h1>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('logout') }}">
+                <button class="logout-btn">Logout</button>
+            </a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="welcome-card">
+            <h2>Welcome, {{ name }} 👋</h2>
+            <p>You are successfully logged in to your dashboard.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %}
+            {% endwith %}
+        </div>
+    </div>
+    <center>
+        <div>
+            
+        <button class="nav-button" onclick="window.location.href='{{ url_for('index_page') }}'">NEXT</button>
+
+       </div>
+    </center>     
+</body>
+</html>
+
