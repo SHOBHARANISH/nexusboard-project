@@ -1,75 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Frontend Tasks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #fff;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-        }
-        .btn-back {
-            display: block;
-            margin: 0 auto 20px auto;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-        }
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
-        .task-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
-        }
-        .task-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            width: 250px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .task-card h3 {
-            margin-top: 0;
-            color: #28a745; /* frontend color */
-            font-size: 20px;
-        }
-        .task-card p {
-            margin: 8px 0;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
-    <h1>💻 Frontend Tasks</h1>
-    <!-- Back button now links to index.html -->
-    <a href="{{ url_for('index_page') }}" class="btn-back">⬅ Back to Index</a>
+{% extends 'base.html' %}
+{% block title %}Frontend Team | Teamity{% endblock %}
 
-    <div class="task-container">
-        {% for task in tasks %}
-        <div class="task-card">
-            <h3>{{ task[1] }}</h3>
-            <p><strong>Assigned To:</strong> {{ task[2] }}</p>
-            <p><strong>Duration:</strong> {{ task[3] }}</p>
-        </div>
-        {% endfor %}
+{% block content %}
+<div class="page-container">
+  <h1>💻 Frontend Team Tasks</h1>
+
+  <div class="task-container">
+    {% for task in tasks %}
+    <div class="task-card">
+      <h3>{{ task[1] }}</h3>
+      <p><strong>Assigned To:</strong> {{ task[2] }}</p>
+      <p><strong>Duration:</strong> {{ task[3] }}</p>
     </div>
-</body>
-</html>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.page-container {
+  background-color: #ffffff;
+  padding: 60px 20px;
+  min-height: 100vh;
+  text-align: center;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+h1 {
+  color: #1E1B4B;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.btn-back {
+  display: inline-block;
+  background-color: #7C3AED;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.btn-back:hover {
+  background-color: #0D9488;
+}
+
+.task-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.task-card {
+  background-color: #FAF5FF;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 25px;
+  width: 260px;
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
+}
+
+.task-card h3 {
+  color: #7C3AED;
+  margin-bottom: 10px;
+}
+
+.task-card p {
+  color: #1E1B4B;
+  font-size: 14px;
+  margin: 8px 0;
+}
+</style>
+{% endblock %}
