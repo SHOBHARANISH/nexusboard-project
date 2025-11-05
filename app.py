@@ -1,16 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import request, jsonify
+from flask_socketio import SocketIO, emit
+from config import Config, TestConfig
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # ---------------- DATABASE CONFIGURATION -----------------
 db_config = {
     'host': 'localhost',
     'database': 'demo2',
     'user': 'postgres',
-    'password': 'shobha'
+    'password': 'Kavya@12'
 }
 
 def get_db_connection():
@@ -19,6 +24,8 @@ def get_db_connection():
 def create_users_table():
     conn = get_db_connection()
     cur = conn.cursor()
+   # cur.execute("DROP TABLE IF EXISTS tasks;")
+
     cur.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -31,6 +38,10 @@ def create_users_table():
     cur.close()
     conn.close()
 
+
+print("✅ Table 'tasks' recreated successfully with status column.")
+
+
 def create_tasks_table():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -38,14 +49,16 @@ def create_tasks_table():
         CREATE TABLE IF NOT EXISTS tasks (
             id SERIAL PRIMARY KEY,
             title VARCHAR(255) NOT NULL,
-            assigned_to VARCHAR(100) NOT NULL,
-            task_type VARCHAR(50) NOT NULL,
-            duration VARCHAR(50) NOT NULL
+            assigned_to VARCHAR(255),
+            task_type VARCHAR(50),
+            duration VARCHAR(50),
+            status VARCHAR(20) DEFAULT 'todo'
         );
     """)
     conn.commit()
     cur.close()
     conn.close()
+
 
 create_users_table()
 create_tasks_table()
@@ -146,10 +159,12 @@ def update_profile():
 # ---------------- PROJECT HEAD -----------------
 @app.route('/project_head', methods=['GET', 'POST'])
 def project_head():
+    # --- Require login ---
     if 'user_id' not in session:
         flash("Please log in first.", "warning")
         return redirect(url_for('login'))
 
+    # --- Project Head access gate ---
     if 'project_head_authenticated' not in session:
         session['project_head_authenticated'] = False
 
@@ -157,7 +172,7 @@ def project_head():
     if not session['project_head_authenticated']:
         if request.method == 'POST' and 'password' in request.form:
             password = request.form['password']
-            if password == '123':  # project head password
+            if password == '123':  # Project Head password
                 session['project_head_authenticated'] = True
                 flash("✅ Access granted! Welcome Project Head.", "success")
                 return redirect(url_for('project_head'))
@@ -165,31 +180,42 @@ def project_head():
                 error = "❌ Incorrect password"
         return render_template('password.html', error=error)
 
+    # --- Database connection ---
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # --- Handle Task Form Submission ---
     if request.method == 'POST' and 'title' in request.form:
         task_id = request.form.get('task_id')
         title = request.form['title']
         assigned_to = request.form['assigned_to']
         task_type = request.form['task_type']
         duration = request.form['duration']
+        status = request.form['status']  # <-- new field
 
-        if task_id:
-            cur.execute("UPDATE tasks SET title=%s, assigned_to=%s, task_type=%s, duration=%s WHERE id=%s",
-                        (title, assigned_to, task_type, duration, task_id))
+        if task_id:  # Update existing task
+            cur.execute("""
+                UPDATE tasks
+                SET title=%s, assigned_to=%s, task_type=%s, duration=%s, status=%s
+                WHERE id=%s
+            """, (title, assigned_to, task_type, duration, status, task_id))
             flash("✏️ Task updated successfully!", "success")
-        else:
-            cur.execute("INSERT INTO tasks (title, assigned_to, task_type, duration) VALUES (%s,%s,%s,%s)",
-                        (title, assigned_to, task_type, duration))
+        else:  # Add new task
+            cur.execute("""
+                INSERT INTO tasks (title, assigned_to, task_type, duration, status)
+                VALUES (%s,%s,%s,%s,%s)
+            """, (title, assigned_to, task_type, duration, status))
             flash("✅ Task created successfully!", "success")
         conn.commit()
 
+    # --- Fetch all tasks ---
     cur.execute("SELECT * FROM tasks ORDER BY id DESC")
     tasks = cur.fetchall()
     cur.close()
     conn.close()
+
     return render_template('project_head.html', tasks=tasks)
+
 
 @app.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
@@ -203,8 +229,10 @@ def delete_task(task_id):
     conn.commit()
     cur.close()
     conn.close()
-    flash("Task deleted successfully!", "success")
+    flash("🗑 Task deleted successfully!", "success")
     return redirect(url_for('project_head'))
+
+
 
 # ---------------- FRONTEND / BACKEND / DATABASE -----------------
 @app.route('/frontend')
@@ -247,6 +275,85 @@ def database():
     conn.close()
     return render_template('database.html', tasks=tasks)
 
+# ---------------- KANBAN BOARD -----------------
+
+@app.route('/kanban_board')
+def kanban_board():
+    if 'user_id' not in session:
+        flash("Please log in first.", "warning")
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM tasks ORDER BY id DESC")
+    tasks = cur.fetchall()
+    cur.close()
+    conn.close()
+    
+    return render_template('kanban_board.html', tasks=tasks)
+
+@app.route('/update_task_status', methods=['POST'])
+def update_task_status():
+    data = request.get_json()
+    task_id = data.get('id')
+    new_status = data.get('status')
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE tasks SET status = %s WHERE id = %s", (new_status, task_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    # Notify all connected clients about the update
+    socketio.emit('task_updated', {'id': task_id, 'status': new_status})
+
+    return jsonify({'success': True})
+
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        flash("Please log in first.", "warning")
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # --- Task Counts ---
+    cur.execute("SELECT COUNT(*) FROM tasks;")
+    total_tasks = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM tasks WHERE status = 'inprogress';")
+    in_progress = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM tasks WHERE status = 'Completed';")
+    Completed = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM users;")
+    team_members = cur.fetchone()[0]
+
+    cur.close()
+    conn.close()
+    print("DEBUG:", total_tasks, in_progress, Completed)
+
+    return render_template(
+        'dashboard.html',
+        name=session.get('user_name', 'User'),
+        total_tasks=total_tasks,
+        in_progress=in_progress,
+        completed=Completed,
+        team_members=team_members
+    )
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    return app
+
+
+
+
 # ---------------- RUN APP -----------------
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
